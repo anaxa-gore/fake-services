@@ -15,6 +15,9 @@ pipeline {
                 sh 'mvn install -fae'
             }
             post {
+                always {
+                    junit 'target/surefire-reports/TEST-*.xml'
+                }
                 success {
                     rocketSend(
                             attachments: [[color: 'green', text: 'Build & Tests OK', title: 'Fin']],

@@ -43,9 +43,7 @@ pipeline {
 
         stage('Tests results') {
             steps {
-                sh 'echo cool'
-
-                // TODO TBA : collecter les résultats des tests
+                junit 'target/surefire-reports/TEST-*.xml'
             }
         }
 

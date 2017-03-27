@@ -45,7 +45,7 @@ pipeline {
         }
 
         stage('Tests results') {
-            echo 'cool'
+            sh 'echo cool'
 
             // TODO TBA : collecter les résultats des tests
         }

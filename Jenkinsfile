@@ -1,14 +1,16 @@
 pipeline {
     agent any
-    tools {
-        maven 'm3'
-    }
 
     stages {
         stage('Build & Unit Tests') {
             steps {
                 // On signale le début des Tests
                 rocketSend channel: 'fake-services', message: 'Début du build'
+
+                withMaven(
+                    maven: 'M3',
+                    mavenSettingsConfig: 'MvnGlobalSettings'
+                )
 
                 // On nettoie
                 sh 'mvn clean'

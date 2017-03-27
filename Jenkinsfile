@@ -7,12 +7,10 @@ pipeline {
                 // On signale le début des Tests
                 rocketSend channel: 'fake-services', message: 'Début du build'
 
-                withMaven(maven: 'M3', globalMavenSettingsConfig: 'globalMaven') {
-                    // On nettoie
-                    sh 'mvn clean'
-                    // On compile et on install en exécutant les tests unitaires
-                    sh 'mvn install'
-                }
+                // On nettoie
+                sh 'mvn clean'
+                // On compile et on install en exécutant les tests unitaires
+                sh 'mvn install'
             }
             post {
                 always {
@@ -54,7 +52,10 @@ pipeline {
             steps {
                 rocketSend channel: 'fake-services', message: 'Déploiement dans NEXUS'
 
-                sh 'mvn deploy'
+                // On a besoin des credentials contenus dans le fichier de config maven
+                withMaven(maven: 'M3', globalMavenSettingsConfig: 'globalMaven') {
+                    sh 'mvn deploy'
+                }
             }
             post {
                 success {

@@ -50,5 +50,10 @@ public class HelloServiceTest {
     public void testHelloWithNoName() {
         assertEquals(Response.Status.NOT_FOUND.getStatusCode(), target.path("hello").path("").request().get().getStatus());
     }
+
+    @Test
+    public void testHelloWithNoName2() {
+        assertEquals(Response.Status.NOT_FOUND.getStatusCode(), target.path("hello").path("Yop").request().get().readEntity(String.class));
+    }
 }
 

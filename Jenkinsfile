@@ -11,7 +11,7 @@ pipeline {
         stage('Build & Unit Tests') {
             steps {
                 // On signale le début des Tests
-                rocketSend channel: 'ic_services', message: 'Début des build/tests'
+                rocketSend channel: '${ROCKET_CHANNEL}', message: 'Début des build/tests'
 
                 sh 'mvn clean'
                 sh 'mvn install -P{params.PLATFORM_TO_BUILD}'

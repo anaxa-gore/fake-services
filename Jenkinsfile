@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    tools {
+        mvn: 'M3'
+    }
 
     stages {
         stage('Build & Unit Tests') {

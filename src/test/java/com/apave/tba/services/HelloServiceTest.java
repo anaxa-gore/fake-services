@@ -48,7 +48,7 @@ public class HelloServiceTest {
 
     @Test
     public void testGoodbyeWithName() {
-        assertEquals("Goodbye Tom !", target.path("goodbye").path("Tom").request().get().readEntity(String.class));
+        assertEquals("Ciao Tom !", target.path("goodbye").path("Tom").request().get().readEntity(String.class));
     }
 
     @Test

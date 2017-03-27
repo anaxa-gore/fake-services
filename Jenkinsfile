@@ -10,12 +10,14 @@ pipeline {
                 // On signale le début des Tests
                 rocketSend channel: 'fake-services', message: 'Début du build'
 
+                // On nettoie
                 sh 'mvn clean'
-                sh 'mvn compile'
-                sh 'mvn install -fae'
+                // On compile et on install en exécutant les tests unitaires
+                sh 'mvn install'
             }
             post {
                 always {
+                    // On sauvegarde systématiquement le rapportde résultat des tests
                     junit 'target/surefire-reports/TEST-*.xml'
                 }
                 success {
@@ -43,9 +45,8 @@ pipeline {
             }
         }
 
-        stage('Tests results') {
+        stage('Archivage du build') {
             steps {
-                junit 'target/surefire-reports/TEST-*.xml'
                 archive 'target/*.war'
             }
         }

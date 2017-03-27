@@ -7,15 +7,12 @@ pipeline {
                 // On signale le début des Tests
                 rocketSend channel: 'fake-services', message: 'Début du build'
 
-                withMaven(
-                    maven: 'M3',
-                    mavenSettingsConfig: 'myMaven'
-                )
-
-                // On nettoie
-                sh 'mvn clean'
-                // On compile et on install en exécutant les tests unitaires
-                sh 'mvn install'
+                withMaven(maven: 'M3', globalMavenSettingsConfig: 'globalMaven') {
+                    // On nettoie
+                    sh 'mvn clean'
+                    // On compile et on install en exécutant les tests unitaires
+                    sh 'mvn install'
+                }
             }
             post {
                 always {

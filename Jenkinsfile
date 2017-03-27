@@ -9,7 +9,7 @@ pipeline {
 
                 withMaven(
                     maven: 'M3',
-                    mavenSettingsConfig: 'MvnGlobalSettings'
+                    mavenSettingsConfig: '124f425f-55ef-4cd1-a445-f19580fe5104'
                 )
 
                 // On nettoie

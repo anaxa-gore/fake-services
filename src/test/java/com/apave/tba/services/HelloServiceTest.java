@@ -53,7 +53,7 @@ public class HelloServiceTest {
 
     @Test
     public void testHelloWithNoName2() {
-        assertEquals(Response.Status.NOT_FOUND.getStatusCode(), target.path("hello").path("Yop").request().get().readEntity(String.class));
+        assertEquals("Hello Yop !", target.path("hello").path("Yop").request().get().readEntity(String.class));
     }
 }
 

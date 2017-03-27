@@ -26,13 +26,13 @@ public class HelloServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        URI baseUri = UriBuilder.fromUri("http://localhost/").port(9998).build();
+        URI baseUri = UriBuilder.fromUri("http://localhost").port(9998).build();
         ResourceConfig config = new ResourceConfig(HelloService.class);
 
         server = GrizzlyHttpServerFactory.createHttpServer(baseUri, config);
 
         Client client = ClientBuilder.newClient();
-        target = client.target(BASE_URI);
+        target = client.target(BASE_URI).path("salutations");
     }
 
     @After
@@ -47,6 +47,11 @@ public class HelloServiceTest {
     }
 
     @Test
+    public void testGoodbyeWithName() {
+        assertEquals("Goodbye Tom !", target.path("goodbye").path("Tom").request().get().readEntity(String.class));
+    }
+
+    @Test
     public void testHelloWithNoName() {
         assertEquals(Response.Status.NOT_FOUND.getStatusCode(), target.path("hello").path("").request().get().getStatus());
     }
@@ -55,5 +60,7 @@ public class HelloServiceTest {
     public void testHelloWithNoName2() {
         assertEquals("Hello Yop !", target.path("hello").path("Yop").request().get().readEntity(String.class));
     }
+
+
 }
 

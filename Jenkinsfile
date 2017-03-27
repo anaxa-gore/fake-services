@@ -3,14 +3,15 @@ pipeline {
     tools {
         maven 'm3'
     }
+    environment {
+        ROCKET_CHANNEL = 'fake-services'
+    }
 
     stages {
-        environment {
-            ROCKET_CHANNEL = 'fake-services'
-        }
-
         stage('Build & Unit Tests') {
             steps {
+                sh 'echo ----------------------------------------------- ${ROCKET_CHANNEL}'
+
                 // On signale le début des Tests
                 rocketSend channel: '$ROCKET_CHANNEL', message: 'Début des build/tests'
 

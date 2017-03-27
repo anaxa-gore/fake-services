@@ -27,18 +27,16 @@ pipeline {
                 }
                 unstable {
                     rocketSend(
-                            attachments: [[color: 'red', text: 'Tests KO', title: 'Problème durant les tests']],
+                            attachments: [[color: 'red', text: 'Tests KO', title: 'Problème durant les tests, vérifier le log console']],
                             channel: '${ROCKET_CHANNEL}',
-                            message: 'Fin',
-                            rawMessage: true
+                            message: 'Fin'
                     )
                 }
                 failure {
                     rocketSend(
-                            attachments: [[color: 'red', text: 'Tests KO', title: 'Echec du build']],
+                            attachments: [[color: 'red', text: 'Tests KO', title: 'Echec du build, vérifier le log console']],
                             channel: '${ROCKET_CHANNEL}',
-                            message: 'Fin',
-                            rawMessage: true
+                            message: 'Fin'
                     )
                 }
             }
@@ -54,9 +52,26 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                rocketSend channel: 'ic_services', message: 'Déploiement dans NEXUS'
+                rocketSend channel: '${ROCKET_CHANNEL}', message: 'Déploiement dans NEXUS'
 
                 sh 'mvn deploy'
+            }
+            post {
+                success {
+                    rocketSend(
+                            attachments: [[color: 'green', text: 'Déploiement OK', title: 'Fin déploiement']],
+                            channel: '${ROCKET_CHANNEL}',
+                            message: 'Fin',
+                            rawMessage: true
+                    )
+                }
+                failure {
+                    rocketSend(
+                            attachments: [[color: 'red', text: 'Déploiement KO, vérifier le log console', title: 'Echec du build']],
+                            channel: '${ROCKET_CHANNEL}',
+                            message: 'Fin'
+                    )
+                }
             }
         }
     }

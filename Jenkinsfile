@@ -3,7 +3,7 @@ pipeline {
     tools {
         maven 'm3'
     }
-    environnement {
+    environment {
         ROCKET_CHANNEL = 'fake-services'
     }
 

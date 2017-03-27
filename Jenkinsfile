@@ -7,13 +7,12 @@ pipeline {
     stages {
         stage('Build & Unit Tests') {
             steps {
-                sh 'echo ----------------------------------------------- fake-services'
-
                 // On signale le début des Tests
-                rocketSend channel: 'fake-services', message: 'Début des build/tests'
+                rocketSend channel: 'fake-services', message: 'Début du build'
 
                 sh 'mvn clean'
-                sh 'mvn install -P{params.PLATFORM_TO_BUILD}'
+                sh 'mvn compile'
+                sh 'mvn install -fae'
             }
             post {
                 success {

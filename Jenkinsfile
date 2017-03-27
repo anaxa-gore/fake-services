@@ -3,17 +3,14 @@ pipeline {
     tools {
         maven 'm3'
     }
-    environment {
-        ROCKET_CHANNEL = 'fake-services'
-    }
 
     stages {
         stage('Build & Unit Tests') {
             steps {
-                sh 'echo ----------------------------------------------- ${ROCKET_CHANNEL}'
+                sh 'echo ----------------------------------------------- fake-services'
 
                 // On signale le début des Tests
-                rocketSend channel: '$ROCKET_CHANNEL', message: 'Début des build/tests'
+                rocketSend channel: 'fake-services', message: 'Début des build/tests'
 
                 sh 'mvn clean'
                 sh 'mvn install -P{params.PLATFORM_TO_BUILD}'
@@ -22,7 +19,7 @@ pipeline {
                 success {
                     rocketSend(
                             attachments: [[color: 'green', text: 'Build & Tests OK', title: 'Fin']],
-                            channel: '${ROCKET_CHANNEL}',
+                            channel: 'fake-services',
                             message: 'Fin',
                             rawMessage: true
                     )
@@ -30,14 +27,14 @@ pipeline {
                 unstable {
                     rocketSend(
                             attachments: [[color: 'red', text: 'Tests KO', title: 'Problème durant les tests, vérifier le log console']],
-                            channel: '${ROCKET_CHANNEL}',
+                            channel: 'fake-services',
                             message: 'Fin'
                     )
                 }
                 failure {
                     rocketSend(
                             attachments: [[color: 'red', text: 'Tests KO', title: 'Echec du build, vérifier le log console']],
-                            channel: '${ROCKET_CHANNEL}',
+                            channel: 'fake-services',
                             message: 'Fin'
                     )
                 }
@@ -54,7 +51,7 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                rocketSend channel: '${ROCKET_CHANNEL}', message: 'Déploiement dans NEXUS'
+                rocketSend channel: 'fake-services', message: 'Déploiement dans NEXUS'
 
                 sh 'mvn deploy'
             }
@@ -62,7 +59,7 @@ pipeline {
                 success {
                     rocketSend(
                             attachments: [[color: 'green', text: 'Déploiement OK', title: 'Fin déploiement']],
-                            channel: '${ROCKET_CHANNEL}',
+                            channel: 'fake-services',
                             message: 'Fin',
                             rawMessage: true
                     )
@@ -70,7 +67,7 @@ pipeline {
                 failure {
                     rocketSend(
                             attachments: [[color: 'red', text: 'Déploiement KO, vérifier le log console', title: 'Echec du build']],
-                            channel: '${ROCKET_CHANNEL}',
+                            channel: 'fake-services',
                             message: 'Fin'
                     )
                 }

@@ -2,6 +2,17 @@ pipeline {
     agent any
 
     stages {
+        stage('Tag') {
+            when {
+                expression {
+                    BRANCH_NAME.startsWith('RELEASE_')
+                }
+            }
+            steps {
+                sh 'echo ON RELEASE !!!'
+            }
+        }
+
         stage('Build & Unit Tests') {
             steps {
                 // On signale le début des Tests
@@ -16,7 +27,7 @@ pipeline {
             }
             post {
                 always {
-                    // On sauvegarde systématiquement le rapportde résultat des tests
+                    // On sauvegarde systématiquement le rapport de résultat des tests
                     junit 'target/surefire-reports/TEST-*.xml'
                 }
                 success {
@@ -51,6 +62,11 @@ pipeline {
         }
 
         stage('Deploy') {
+            // On ne déploie que si on est sur la branche develop
+            when {
+                branch 'develop'
+            }
+
             steps {
                 rocketSend channel: 'fake-services', message: 'Déploiement dans NEXUS'
 
@@ -75,6 +91,15 @@ pipeline {
                             message: 'Fin'
                     )
                 }
+            }
+        }
+
+        stage('Installation') {
+            when {
+                branch 'develop'
+            }
+            steps {
+                sh 'echo Installation'
             }
         }
     }

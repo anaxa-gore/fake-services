@@ -45,15 +45,19 @@ pipeline {
         }
 
         stage('Tests results') {
-            sh 'echo cool'
+            steps {
+                sh 'echo cool'
 
-            // TODO TBA : collecter les résultats des tests
+                // TODO TBA : collecter les résultats des tests
+            }
         }
 
         stage('Deploy') {
-            rocketSend channel: 'ic_services', message: 'Déploiement dans NEXUS'
+            steps {
+                rocketSend channel: 'ic_services', message: 'Déploiement dans NEXUS'
 
-            sh 'mvn deploy'
+                sh 'mvn deploy'
+            }
         }
     }
 }

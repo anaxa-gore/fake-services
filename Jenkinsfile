@@ -85,7 +85,7 @@ pipeline {
 
                 // On a besoin des credentials contenus dans le fichier de config maven
                 withMaven(maven: 'M3', globalMavenSettingsConfig: 'globalMaven') {
-                    sh 'mvn deploy'
+                    sh 'mvn deploy -DskipTests'
                 }
             }
             post {

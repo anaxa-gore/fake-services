@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    tools {
+        sonar 'sonarJ'
+    }
 
     stages {
         stage('Tag') {
@@ -29,8 +32,9 @@ pipeline {
                         },
                         sonar: {
                             // TODO TBA : Uniquement sur develop ?
+                            //scannerHome = tool ''
                             withSonarQubeEnv('sonarScanner') {
-                                sh "${scannerHome}/bin/sonar-scanner"
+                                sh "sonar-scanner"
                             }
                         }
                 )

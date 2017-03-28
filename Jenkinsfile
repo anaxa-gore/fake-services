@@ -15,15 +15,25 @@ pipeline {
 
         stage('Build & Unit Tests') {
             steps {
-                // On signale le début des Tests
-                rocketSend channel: 'fake-services', message: 'Début du build'
+                parallel(
+                        build: {
+                            // On signale le début des Tests
+                            rocketSend channel: 'fake-services', message: 'Début du build'
 
-                withMaven(maven: 'M3') {
-                    // On nettoie
-                    sh 'mvn clean'
-                    // On compile et on install en exécutant les tests unitaires
-                    sh 'mvn install'
-                }
+                            withMaven(maven: 'M3') {
+                                // On nettoie
+                                sh 'mvn clean'
+                                // On compile et on install en exécutant les tests unitaires
+                                sh 'mvn install'
+                            }
+                        },
+                        sonar: {
+                            // TODO TBA : Uniquement sur develop ?
+                            withSonarQubeEnv('sonarScanner') {
+                                sh "${scannerHome}/bin/sonar-scanner"
+                            }
+                        }
+                )
             }
             post {
                 always {
@@ -52,12 +62,6 @@ pipeline {
                             message: 'Fin'
                     )
                 }
-            }
-        }
-
-        stage('Archivage du build') {
-            steps {
-                archive 'target/*.war'
             }
         }
 

@@ -13,10 +13,10 @@ pipeline {
             }
         }
 
-        stage('Build & Unit Tests') {
+        stage('Build, Tests & Qualité') {
             steps {
                 parallel(
-                        build: {
+                        "Build & Tests": {
                             // On signale le début des Tests
                             rocketSend channel: 'fake-services', message: 'Début du build'
 
@@ -27,7 +27,7 @@ pipeline {
                                 sh 'mvn install'
                             }
                         },
-                        sonar: {
+                        "Sonar Qualité": {
                             withSonarQubeEnv('SonarApave') {
                                 sh "${tool(name: 'sonarJ', type: 'hudson.plugins.sonar.SonarRunnerInstallation')}/bin/sonar-scanner"
                             }

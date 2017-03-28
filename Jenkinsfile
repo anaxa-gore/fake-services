@@ -31,10 +31,12 @@ pipeline {
                             }
                         },
                         sonar: {
-                            // TODO TBA : Uniquement sur develop ?
-                            def scannerHome = tool name: 'sonarJ', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
-                            withSonarQubeEnv('sonarScanner') {
-                                sh "${scannerHome}/bin/sonar-scanner"
+                            script {
+                                // TODO TBA : Uniquement sur develop ?
+                                def scannerHome = tool name: 'sonarJ', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
+                                withSonarQubeEnv('sonarScanner') {
+                                    sh "${scannerHome}/bin/sonar-scanner"
+                                }
                             }
                         }
                 )

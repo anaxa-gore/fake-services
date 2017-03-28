@@ -15,24 +15,20 @@ pipeline {
 
         stage('Build, Tests & Qualité') {
             steps {
-                parallel(
-                        "Build & Tests": {
-                            // On signale le début des Tests
-                            rocketSend channel: 'fake-services', message: 'Début du build'
 
-                            withMaven(maven: 'M3') {
-                                // On nettoie
-                                sh 'mvn clean'
-                                // On compile et on install en exécutant les tests unitaires
-                                sh 'mvn install'
-                            }
-                        },
-                        "Sonar Qualité": {
-                            withSonarQubeEnv('SonarApave') {
-                                sh "${tool(name: 'sonarJ', type: 'hudson.plugins.sonar.SonarRunnerInstallation')}/bin/sonar-scanner"
-                            }
-                        }
-                )
+                // On signale le début des Tests
+                rocketSend channel: 'fake-services', message: 'Début du build / tests / qualité'
+
+                withMaven(maven: 'M3') {
+                    // On nettoie
+                    sh 'mvn clean'
+                    // On compile et on install en exécutant les tests unitaires
+                    sh 'mvn install'
+                }
+
+                withSonarQubeEnv('SonarApave') {
+                    sh "${tool(name: 'sonarJ', type: 'hudson.plugins.sonar.SonarRunnerInstallation')}/bin/sonar-scanner"
+                }
             }
             post {
                 always {

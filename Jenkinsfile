@@ -31,13 +31,16 @@ pipeline {
                             }
                         },
                         sonar: {
-                            script {
-                                // TODO TBA : Uniquement sur develop ?
-                                def scannerHome = tool name: 'sonarJ', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
-                                withSonarQubeEnv('SonarApave') {
-                                    sh "${scannerHome}/bin/sonar-scanner"
-                                }
+                            withSonarQubeEnv('SonarApave') {
+                                sh "${tool(name: 'sonarJ', type: 'hudson.plugins.sonar.SonarRunnerInstallation')}/bin/sonar-scanner"
                             }
+//                            script {
+//                                // TODO TBA : Uniquement sur develop ?
+//                                def scannerHome = tool name: 'sonarJ', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
+//                                withSonarQubeEnv('SonarApave') {
+//                                    sh "${scannerHome}/bin/sonar-scanner"
+//                                }
+//                            }
                         }
                 )
             }
@@ -109,7 +112,7 @@ pipeline {
                 branch 'develop'
             }
             steps {
-                sh 'echo Installation'
+                sh 'echo Installation sur environnement de développement'
             }
         }
     }

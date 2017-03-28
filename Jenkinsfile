@@ -27,6 +27,11 @@ pipeline {
                 }
 
                 withSonarQubeEnv('SonarApave') {
+                    // On copie toutes les dépendances dans target/dependency pour que sonar puisse réaliser
+                    // correctement la couverture de code.
+                    sh 'mvn dependency:copy-dependencies'
+
+                    // On lance la couverture de code
                     sh "${tool(name: 'sonarJ', type: 'hudson.plugins.sonar.SonarRunnerInstallation')}/bin/sonar-scanner"
                 }
             }

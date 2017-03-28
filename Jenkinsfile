@@ -1,8 +1,5 @@
 pipeline {
     agent any
-//    tools {
-//        hudson.plugins.sonar.SonarRunnerInstallation 'sonarJ'
-//    }
 
     stages {
         stage('Tag') {
@@ -34,13 +31,6 @@ pipeline {
                             withSonarQubeEnv('SonarApave') {
                                 sh "${tool(name: 'sonarJ', type: 'hudson.plugins.sonar.SonarRunnerInstallation')}/bin/sonar-scanner"
                             }
-//                            script {
-//                                // TODO TBA : Uniquement sur develop ?
-//                                def scannerHome = tool name: 'sonarJ', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
-//                                withSonarQubeEnv('SonarApave') {
-//                                    sh "${scannerHome}/bin/sonar-scanner"
-//                                }
-//                            }
                         }
                 )
             }

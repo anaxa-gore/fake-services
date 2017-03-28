@@ -32,7 +32,7 @@ pipeline {
                         },
                         sonar: {
                             // TODO TBA : Uniquement sur develop ?
-                            scannerHome = tool 'sonarJ'
+                            def scannerHome = tool name: 'sonarJ', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
                             withSonarQubeEnv('sonarScanner') {
                                 sh "${scannerHome}/bin/sonar-scanner"
                             }

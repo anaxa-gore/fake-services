@@ -1,8 +1,8 @@
 pipeline {
     agent any
-    tools {
-        hudson.plugins.sonar.SonarRunnerInstallation 'sonarJ'
-    }
+//    tools {
+//        hudson.plugins.sonar.SonarRunnerInstallation 'sonarJ'
+//    }
 
     stages {
         stage('Tag') {
@@ -32,9 +32,9 @@ pipeline {
                         },
                         sonar: {
                             // TODO TBA : Uniquement sur develop ?
-                            //scannerHome = tool ''
+                            scannerHome = tool 'sonarJ'
                             withSonarQubeEnv('sonarScanner') {
-                                sh "sonar-scanner"
+                                sh "${scannerHome}/bin/sonar-scanner"
                             }
                         }
                 )

@@ -19,8 +19,6 @@ public class PerformanceService {
         int waitingDelay = r.nextInt(maxValue);
         try {
             Thread.sleep(waitingDelay);
-        } catch (InterruptedException e) {
-            // On s'en fout
         } finally {
             return Response.ok("Un message de réponse en " + waitingDelay + "ms").build();
         }

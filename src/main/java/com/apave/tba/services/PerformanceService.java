@@ -3,6 +3,7 @@ package com.apave.tba.services;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import java.util.Random;
 
@@ -12,15 +13,27 @@ import java.util.Random;
 @Path("/performances")
 public class PerformanceService {
     @GET
-    @Path("/{max}")
+    @Path("/infos/{max}")
     public Response getInfos(@PathParam("max") int maxValue) {
+        return Response.ok("Un message de réponse en " + wait(maxValue) + "ms").build();
+    }
+
+    @GET
+    @Path("/data/{max}")
+    public Response getData(@PathParam("max") int maxValue, @QueryParam("datas") String datas) {
+        return Response.ok("Donnée renvoyée en " + wait(maxValue) + "ms : ", datas).build();
+    }
+
+    private int wait(int max) {
         Random r = new Random();
 
-        int waitingDelay = r.nextInt(maxValue);
+        int waitingDelay = r.nextInt(max);
         try {
             Thread.sleep(waitingDelay);
-        } finally {
-            return Response.ok("Un message de réponse en " + waitingDelay + "ms").build();
+        } catch (InterruptedException ie) {
+            // On s'en fout !
+            return waitingDelay;
         }
+        return waitingDelay;
     }
 }

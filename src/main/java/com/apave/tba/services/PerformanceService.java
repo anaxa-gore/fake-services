@@ -13,7 +13,7 @@ import java.util.Random;
 @Path("/performances")
 public class PerformanceService {
     @GET
-    @Path("/infos/{max}")
+    @Path("/ping/{max}")
     public Response getInfos(@PathParam("max") int maxValue) {
         return Response.ok("Un message de réponse en " + wait(maxValue) + "ms").build();
     }

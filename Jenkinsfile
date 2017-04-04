@@ -17,7 +17,8 @@ pipeline {
             steps {
 
                 // On signale le début des Tests
-                rocketSend channel: 'fake-services', message: 'Début du build / tests / qualité'
+//                rocketSend channel: 'fake-services', message: 'Début du build / tests / qualité'
+                mattermostSend color: "good", message: "Début du build / tests / qualité"
 
                 withMaven(maven: 'M3') {
                     // On nettoie
@@ -41,26 +42,29 @@ pipeline {
                     junit 'target/surefire-reports/TEST-*.xml'
                 }
                 success {
-                    rocketSend(
-                            attachments: [[color: 'green', text: 'Build & Tests OK', title: 'Fin']],
-                            channel: 'fake-services',
-                            message: 'Fin',
-                            rawMessage: true
-                    )
+//                    rocketSend(
+//                            attachments: [[color: 'green', text: 'Build & Tests OK', title: 'Fin']],
+//                            channel: 'fake-services',
+//                            message: 'Fin',
+//                            rawMessage: true
+//                    )
+                    mattermostSend color: "good", message: "Build & Tests OK"
                 }
                 unstable {
-                    rocketSend(
-                            attachments: [[color: 'red', text: 'Tests KO', title: 'Problème durant les tests, vérifier le log console']],
-                            channel: 'fake-services',
-                            message: 'Fin'
-                    )
+//                    rocketSend(
+//                            attachments: [[color: 'red', text: 'Tests KO', title: 'Problème durant les tests, vérifier le log console']],
+//                            channel: 'fake-services',
+//                            message: 'Fin'
+//                    )
+                    mattermostSend color: "danger", message: "Problème durant les tests, vérifier le log console\n(<${env.BUILD_URL}>)"
                 }
                 failure {
-                    rocketSend(
-                            attachments: [[color: 'red', text: 'Tests KO', title: 'Echec du build, vérifier le log console']],
-                            channel: 'fake-services',
-                            message: 'Fin'
-                    )
+//                    rocketSend(
+//                            attachments: [[color: 'red', text: 'Tests KO', title: 'Echec du build, vérifier le log console']],
+//                            channel: 'fake-services',
+//                            message: 'Fin'
+//                    )
+                    mattermostSend color: "danger", message: "Echec durant le build, vérifier le log console\n(<${env.BUILD_URL}>)"
                 }
             }
         }
@@ -72,7 +76,8 @@ pipeline {
             }
 
             steps {
-                rocketSend channel: 'fake-services', message: 'Déploiement dans NEXUS'
+//                rocketSend channel: 'fake-services', message: 'Déploiement dans NEXUS'
+                mattermostSend color: "good", message: "Déploiement dans NEXUS"
 
                 // On a besoin des credentials contenus dans le fichier de config maven
                 withMaven(maven: 'M3', globalMavenSettingsConfig: 'globalMaven') {
@@ -81,19 +86,21 @@ pipeline {
             }
             post {
                 success {
-                    rocketSend(
-                            attachments: [[color: 'green', text: 'Déploiement OK', title: 'Fin déploiement']],
-                            channel: 'fake-services',
-                            message: 'Fin',
-                            rawMessage: true
-                    )
+//                    rocketSend(
+//                            attachments: [[color: 'green', text: 'Déploiement OK', title: 'Fin déploiement']],
+//                            channel: 'fake-services',
+//                            message: 'Fin',
+//                            rawMessage: true
+//                    )
+                    mattermostSend color: "good", message: "Déploiement NEXUS OK"
                 }
                 failure {
-                    rocketSend(
-                            attachments: [[color: 'red', text: 'Déploiement KO, vérifier le log console', title: 'Echec du build']],
-                            channel: 'fake-services',
-                            message: 'Fin'
-                    )
+//                    rocketSend(
+//                            attachments: [[color: 'red', text: 'Déploiement KO, vérifier le log console', title: 'Echec du build']],
+//                            channel: 'fake-services',
+//                            message: 'Fin'
+//                    )
+                    mattermostSend color: "danger", message: "Echec durant le déploiement, vérifier le log console\n(<${env.BUILD_URL}>)"
                 }
             }
         }

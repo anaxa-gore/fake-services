@@ -92,7 +92,7 @@ pipeline {
 //                            message: 'Fin',
 //                            rawMessage: true
 //                    )
-                    mattermostSend color: "good", message: "Déploiement NEXUS OK"
+                    mattermostSend color: "good", message: "Déploiement *NEXUS* OK\n(<${env.BUILD_URL}>)"
                 }
                 failure {
 //                    rocketSend(
